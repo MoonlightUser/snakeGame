@@ -10,4 +10,14 @@
     height: 30px;
     background-color: azure;
     border-style: solid;
+    z-index: 1;
+}
+
+.snake {
+    position: absolute;
+    background-color: chartreuse;
+    border-style: solid;
+    width: 30px;
+    height: 30px;
+    z-index: 99;
 }

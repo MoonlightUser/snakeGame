@@ -1,14 +1,23 @@
 let keyNow = "w"
+const snake_head_position = {
+    width: "60px",
+    height: "60px"
+}
+const snake_head = document.createElement("div")
+snake_head.className = "snake"
+snake_head.style.top = `${snake_head_position.height}`
+snake_head.style.left = `${snake_head_position.width}`
+document.body.appendChild(snake_head)
 
-for (let weidth = 0; weidth <= 10; weidth++){ //render map in hight
-    let paddingTop = weidth * 30
+for (let width = 0; width <= 10; width++){ //render map in hight
+    let paddingTop = width * 30
     let newAreaW = document.createElement("div")
     newAreaW.className = "map"
     newAreaW.style.top = `${paddingTop}px`
     document.body.appendChild(newAreaW)
 
-    for (let hight = 0; hight <= 10; hight++){ //render map in weidth
-        let paddingLeft = hight * 30
+    for (let height = 0; height <= 10; height++){ //render map in weidth
+        let paddingLeft = height * 30
         let newAreaH = document.createElement("div")
         newAreaH.className = "map"
         newAreaH.style.top = `${paddingTop}px`
@@ -35,3 +44,7 @@ document.addEventListener("keydown", (key) =>{
         keyNow = "s"
     }
 })
+
+function game(key){
+
+}
