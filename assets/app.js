@@ -1,3 +1,5 @@
+let keyNow = "w"
+
 for (let weidth = 0; weidth <= 10; weidth++){ //render map in hight
     let paddingTop = weidth * 30
     let newAreaW = document.createElement("div")
@@ -14,3 +16,22 @@ for (let weidth = 0; weidth <= 10; weidth++){ //render map in hight
         document.body.appendChild(newAreaH)
     }
 }
+
+document.addEventListener("keydown", (key) =>{
+    if (`${key.key}` == "w" || `${key.key}` == "W"){
+        console.log('%capp.js line:20 "w"', 'color: #007acc;', "w");
+        keyNow = "w"
+    }
+    else if (`${key.key}` == "a" || `${key.key}` == "A"){
+        console.log('%capp.js line:20 "w"', 'color: #007acc;', "a");
+        keyNow = "a"
+    }
+    else if (`${key.key}` == "d" || `${key.key}` == "D"){
+        console.log('%capp.js line:20 "w"', 'color: #007acc;', "d");
+        keyNow = "d"
+    }
+    else if (`${key.key}` == "s" || `${key.key}` == "S"){
+        console.log('%capp.js line:20 "w"', 'color: #007acc;', "s");
+        keyNow = "s"
+    }
+})
