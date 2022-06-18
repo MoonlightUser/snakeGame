@@ -21,3 +21,12 @@
     height: 30px;
     z-index: 99;
 }
+
+.apple {
+    position: absolute;
+    background-color: rgb(255, 60, 0);
+    border-style: solid;
+    width: 30px;
+    height: 30px;
+    z-index: 88;
+}
