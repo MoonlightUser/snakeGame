@@ -64,9 +64,9 @@ document.addEventListener("keydown", (key) =>{
     }
 })
 function checkAppple(){
-    // console.log(snake_head_position.y,  apple_position.y, "y  **  x", snake_head_position.x, apple_position.x);
     if (snake_head_position.y == apple_position.y && snake_head_position.x == apple_position.x){
         console.log("numnum");
+        changeApple()
     }
 }
 function game(){
@@ -100,6 +100,17 @@ function sleep(ms) {
     console.log("object");
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function changeApple(){
+    apple_position = {
+        x: Math.floor(Math.random() * 11)*m,
+        y: Math.floor(Math.random() * 11)*m
+    }
+    apple.style.top = `${apple_position.y}px`
+    apple.style.left = `${apple_position.x}px `
+    document.body.appendChild(apple)
+}
+
 
 for (let i = 0; i <= 10; i++){
     
