@@ -19,7 +19,7 @@
     border-style: solid;
     width: 30px;
     height: 30px;
-    z-index: 99;
+    z-index: 80;
 }
 
 .snake_b {
@@ -28,7 +28,7 @@
     border-style: solid;
     width: 30px;
     height: 30px;
-    z-index: 96;
+    z-index: 80;
 }
 
 .apple {
@@ -37,5 +37,15 @@
     border-style: solid;
     width: 30px;
     height: 30px;
-    z-index: 88;
+    z-index: 60;
+}
+
+h1 {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 100px;
+    background-color: brown;
+    z-index: 99;
 }

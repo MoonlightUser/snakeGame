@@ -1,24 +1,20 @@
 const m = 30 // 1m = 30px 
+let endFlag = false
+
 
 let keyNow = "w" // this varible will show what key was clicked
 let snake_body_position = { //start position of snake head
-    x: 2*m,
-    y: 2*m
+    x: 5*m,
+    y: 5*m
 }
 
 let apple_position = { //start position of apple
     x: 2*m,
-    y: 0*m
+    y: 2*m
 }
 
-let snake_body_new = [{ //start position of apple
-    x: 2*m,
-    y: 2*m
-}]
-let snake_body_old = [{ //start position of apple
-    x: 2*m,
-    y: 2*m
-}]
+let snake_body_new = [snake_body_position]
+let snake_body_old = [snake_body_position]
 
 const snake_head = document.createElement("div") //create and render the snake head
 snake_head.id = "snake_HEAD"
@@ -34,14 +30,14 @@ apple.style.top = `${apple_position.y}px`
 apple.style.left = `${apple_position.x}px `
 document.body.appendChild(apple)
 
-for (let x = 0; x <= 10; x++){ //render map in hight
+for (let x = 0; x <= 5; x++){ //render map in hight
     let paddingTop = x * m
     let newAreaW = document.createElement("div")
     newAreaW.className = "map"
     newAreaW.style.top = `${paddingTop}px`
     document.body.appendChild(newAreaW)
 
-    for (let y = 0; y <= 10; y++){ //render map in weidth
+    for (let y = 0; y <= 5; y++){ //render map in weidth
         let paddingLeft = y * m
         let newAreaH = document.createElement("div")
         newAreaH.className = "map"
@@ -51,21 +47,30 @@ for (let x = 0; x <= 10; x++){ //render map in hight
     }
 }
 
+let snake_body = document.createElement("div") //create and render the snake head
+snake_body.id = `snake_BODY_${snake_body_new.length}`
+snake_body.className = "snake_b"
+snake_body.style.top = `${snake_body_old.at(-1).y}px`
+snake_body.style.left = `${snake_body_old.at(-1).x}px `
+document.body.appendChild(snake_body)
+snake_body_position = {
+    x: snake_body_old.at(-1).x,
+    y: snake_body_old.at(-1).y
+}
+snake_body_new.push(snake_body_position)
+snake_body_old.push(snake_body_position)
+
 document.addEventListener("keydown", (key) =>{
-    if (`${key.key}` == "w" || `${key.key}` == "W"){
-        console.log('%capp.js line:20 "w"', 'color: #007acc;', "w");
+    if (`${key.key}` == "w" || `${key.key}` == "W" || `${key.key}` == "ArrowUp"){
         keyNow = "w"
     }
-    else if (`${key.key}` == "a" || `${key.key}` == "A"){
-        console.log('%capp.js line:20 "w"', 'color: #007acc;', "a");
+    else if (`${key.key}` == "a" || `${key.key}` == "A" || `${key.key}` == "ArrowLeft"){
         keyNow = "a"
     }
-    else if (`${key.key}` == "d" || `${key.key}` == "D"){
-        console.log('%capp.js line:20 "w"', 'color: #007acc;', "d");
+    else if (`${key.key}` == "d" || `${key.key}` == "D" || `${key.key}` == "ArrowRight"){
         keyNow = "d"
     }
-    else if (`${key.key}` == "s" || `${key.key}` == "S"){
-        console.log('%capp.js line:20 "w"', 'color: #007acc;', "s");
+    else if (`${key.key}` == "s" || `${key.key}` == "S" || `${key.key}` == "ArrowDown"){
         keyNow = "s"
     }
 })
@@ -77,22 +82,49 @@ function checkAppple(){ //if apple was eaten by head of snake we use changeApple
     }
 }
 
+function checkEndOfGame(){
+    if (snake_body_new[0].x < 0 || snake_body_new[0].x > 5*m || snake_body_new[0].y < 0 || snake_body_new[0].y > 5*m){
+        endOfGame()
+        return true
+    }
+    else{
+        return false
+    }
+}
+
 function changeHeadPosition(){
-    
-    
     if (keyNow == "w"){
+        for (let k in snake_body_new){
+            if (snake_body_new[k].x == snake_body_new[0].x && snake_body_new[k].y == snake_body_new[0].y - m){
+                endOfGame()
+            }
+        }
         snake_body_new[0].y -= m
     }
     else if (keyNow == "a"){
+        for (let k in snake_body_new){
+            if (snake_body_new[k].x == snake_body_new[0].x-m && snake_body_new[k].y == snake_body_new[0].y){
+                endOfGame()
+            }
+        }
         snake_body_new[0].x -= m
     }
     else if (keyNow == "d"){
+        for (let k in snake_body_new){
+            if (snake_body_new[k].x == snake_body_new[0].x+m && snake_body_new[k].y == snake_body_new[0].y){
+                endOfGame()
+            }
+        }
         snake_body_new[0].x += m
     }
     else if (keyNow == "s"){
+        for (let k in snake_body_new){
+            if (snake_body_new[k].x == snake_body_new[0].x && snake_body_new[k].y == snake_body_new[0].y + m){
+                endOfGame()
+            }
+        }
         snake_body_new[0].y += m
     }
-    
     checkAppple()
 }
 
@@ -109,9 +141,28 @@ function renderSnake(){//render the snake
 }
 
 function changeApple(){ //change apple position on random
-    apple_position = {
-        x: Math.floor(Math.random() * 11)*m,
-        y: Math.floor(Math.random() * 11)*m
+    let localFlag = true
+    while(localFlag){
+        apple_position = {
+            x: Math.floor(Math.random() * 6)*m,
+            y: Math.floor(Math.random() * 6)*m
+        }
+        for (let k in snake_body_new){
+            if (snake_body_new[k].x != apple_position.x || snake_body_new[k].y != apple_position.y){
+                localFlag = false
+                console.log('%capp.js line:161 apple_position.x', 'color: #a52a2a;', apple_position.x);
+                console.log('%capp.js line:161 apple_position.y', 'color: #a52a2a;', apple_position.y);
+                console.log("----------");
+                console.log('%capp.js line:161 apple_position.x', 'color: #a52a2a;', snake_body_new[k].x);
+                console.log('%capp.js line:161 apple_position.y', 'color: #a52a2a;', snake_body_new[k].y);
+                console.log("");
+                
+            }
+            else{
+                localFlag = false
+            }
+
+        } 
     }
     apple.style.top = `${apple_position.y}px`
     apple.style.left = `${apple_position.x}px `
@@ -155,24 +206,25 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-
+function endOfGame(){
+    document.getElementsByTagName("h1")[0].style.visibility = "visible"
+    endFlag = true
+}
 
 async function start(){
-    while(1){
-        await sleep(100)
-        console.log("cycle");
+    while(!endFlag){
+        await sleep(500)
         for (let o in snake_body_old){
             
             snake_body_old[o].x = snake_body_new[o].x
             snake_body_old[o].y = snake_body_new[o].y
         }
         changeHeadPosition()
-        renderBody()
-            
-        renderSnake()
-        
-        console.log(snake_body_new);
-        console.log(snake_body_old);
+        if (checkEndOfGame()){}
+        else{
+            renderBody()
+            renderSnake()                
+        }
     }    
 }
 start()
