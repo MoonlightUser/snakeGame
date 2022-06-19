@@ -1,23 +1,33 @@
 const m = 30 // 1m = 30px 
 
-let keyNow = "w"
-let snake_head_position = {
-    y: 2*m,
-    x: 2*m
+let keyNow = "w" // this varible will show what key was clicked
+let snake_body_position = { //start position of snake head
+    x: 2*m,
+    y: 2*m
 }
 
-let apple_position = {
-    x: 7*m,
-    y: 4*m
+let apple_position = { //start position of apple
+    x: 2*m,
+    y: 0*m
 }
-const snake_head = document.createElement("div")
+
+let snake_body_new = [{ //start position of apple
+    x: 2*m,
+    y: 2*m
+}]
+let snake_body_old = [{ //start position of apple
+    x: 2*m,
+    y: 2*m
+}]
+
+const snake_head = document.createElement("div") //create and render the snake head
 snake_head.id = "snake_HEAD"
 snake_head.className = "snake"
-snake_head.style.top = `${snake_head_position.x}px`
-snake_head.style.left = `${snake_head_position.y}px `
+snake_head.style.top = `${snake_body_new[0].x}px`
+snake_head.style.left = `${snake_body_new[0].y}px `
 document.body.appendChild(snake_head)
 
-const apple = document.createElement("div")
+const apple = document.createElement("div") //create and render the apple
 apple.id = "apple_id"
 apple.className = "apple"
 apple.style.top = `${apple_position.y}px`
@@ -45,63 +55,60 @@ document.addEventListener("keydown", (key) =>{
     if (`${key.key}` == "w" || `${key.key}` == "W"){
         console.log('%capp.js line:20 "w"', 'color: #007acc;', "w");
         keyNow = "w"
-        game()
     }
     else if (`${key.key}` == "a" || `${key.key}` == "A"){
         console.log('%capp.js line:20 "w"', 'color: #007acc;', "a");
         keyNow = "a"
-        game()
     }
     else if (`${key.key}` == "d" || `${key.key}` == "D"){
         console.log('%capp.js line:20 "w"', 'color: #007acc;', "d");
         keyNow = "d"
-        game()
     }
     else if (`${key.key}` == "s" || `${key.key}` == "S"){
         console.log('%capp.js line:20 "w"', 'color: #007acc;', "s");
         keyNow = "s"
-        game()
     }
 })
-function checkAppple(){
-    if (snake_head_position.y == apple_position.y && snake_head_position.x == apple_position.x){
+
+function checkAppple(){ //if apple was eaten by head of snake we use changeApple()
+    if (snake_body_new[0].y == apple_position.y && snake_body_new[0].x == apple_position.x){
         console.log("numnum");
         changeApple()
     }
 }
-function game(){
+
+function changeHeadPosition(){
+    
+    
     if (keyNow == "w"){
-        snake_head_position.y -= m
-        renderSnake()
+        snake_body_new[0].y -= m
     }
     else if (keyNow == "a"){
-        snake_head_position.x -= m
-        renderSnake()
+        snake_body_new[0].x -= m
     }
     else if (keyNow == "d"){
-        snake_head_position.x += m
-        renderSnake()
+        snake_body_new[0].x += m
     }
     else if (keyNow == "s"){
-        snake_head_position.y += m
-        renderSnake()
+        snake_body_new[0].y += m
     }
+    
     checkAppple()
 }
 
-function renderSnake(){
-    let snake_head = document.getElementById("snake_HEAD")
-    snake_head.className = "snake"
-    snake_head.style.top = `${snake_head_position.y}px`
-    snake_head.style.left = `${snake_head_position.x}px`
-    document.body.appendChild(snake_head)
-}
-function sleep(ms) {
-    console.log("object");
-    return new Promise(resolve => setTimeout(resolve, ms));
+function changeBodyPosiion(){
+
 }
 
-function changeApple(){
+function renderSnake(){//render the snake
+    let snake_head = document.getElementById("snake_HEAD")
+    snake_head.className = "snake"
+    snake_head.style.top = `${snake_body_new[0].y}px`
+    snake_head.style.left = `${snake_body_new[0].x}px`
+    document.body.appendChild(snake_head)
+}
+
+function changeApple(){ //change apple position on random
     apple_position = {
         x: Math.floor(Math.random() * 11)*m,
         y: Math.floor(Math.random() * 11)*m
@@ -109,10 +116,63 @@ function changeApple(){
     apple.style.top = `${apple_position.y}px`
     apple.style.left = `${apple_position.x}px `
     document.body.appendChild(apple)
+    newBodySnake()
 }
 
-
-for (let i = 0; i <= 10; i++){
-    
-
+function renderBody(){
+    if (snake_body_new.length != 1){
+        for(let g = 1; g < snake_body_new.length; g++){
+            let snake_body = document.getElementById(`snake_BODY_${g}`) //create and render the snake head
+            snake_body.style.top = `${snake_body_old[g-1].y}px`
+            snake_body.style.left = `${snake_body_old[g-1].x}px `
+            document.body.appendChild(snake_body)
+            snake_body_new[g] = {
+                x: snake_body_old[g-1].x,
+                y: snake_body_old[g-1].y
+            }
+            
+            
+        }
+    }
 }
+
+function newBodySnake(){
+    let snake_body = document.createElement("div") //create and render the snake head
+    snake_body.id = `snake_BODY_${snake_body_new.length}`
+    snake_body.className = "snake_b"
+    snake_body.style.top = `${snake_body_old.at(-1).y}px`
+    snake_body.style.left = `${snake_body_old.at(-1).x}px `
+    document.body.appendChild(snake_body)
+    let snake_body_position = {
+        x: snake_body_old.at(-1).x,
+        y: snake_body_old.at(-1).y
+    }
+    snake_body_new.push(snake_body_position)
+    snake_body_old.push(snake_body_position)
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
+
+async function start(){
+    while(1){
+        await sleep(100)
+        console.log("cycle");
+        for (let o in snake_body_old){
+            
+            snake_body_old[o].x = snake_body_new[o].x
+            snake_body_old[o].y = snake_body_new[o].y
+        }
+        changeHeadPosition()
+        renderBody()
+            
+        renderSnake()
+        
+        console.log(snake_body_new);
+        console.log(snake_body_old);
+    }    
+}
+start()
