@@ -1,6 +1,10 @@
 const m = 30 // 1m = 30px 
 let endFlag = false
 
+const map = {
+    x: 11,
+    y: 11
+}
 
 let keyNow = "w" // this varible will show what key was clicked
 let snake_body_position = { //start position of snake head
@@ -9,7 +13,7 @@ let snake_body_position = { //start position of snake head
 }
 
 let apple_position = { //start position of apple
-    x: 2*m,
+    x: 5*m, 
     y: 2*m
 }
 
@@ -30,15 +34,15 @@ apple.style.top = `${apple_position.y}px`
 apple.style.left = `${apple_position.x}px `
 document.body.appendChild(apple)
 
-for (let x = 0; x <= 5; x++){ //render map in hight
-    let paddingTop = x * m
+for (let y = 0; y < map.y; y++){ //render map in hight
+    let paddingTop = y * m
     let newAreaW = document.createElement("div")
     newAreaW.className = "map"
     newAreaW.style.top = `${paddingTop}px`
     document.body.appendChild(newAreaW)
 
-    for (let y = 0; y <= 5; y++){ //render map in weidth
-        let paddingLeft = y * m
+    for (let x = 0; x < map.x; x++){ //render map in weidth
+        let paddingLeft = x * m
         let newAreaH = document.createElement("div")
         newAreaH.className = "map"
         newAreaH.style.top = `${paddingTop}px`
@@ -47,7 +51,7 @@ for (let x = 0; x <= 5; x++){ //render map in hight
     }
 }
 
-let snake_body = document.createElement("div") //create and render the snake head
+let snake_body = document.createElement("div") //create and render the snake body
 snake_body.id = `snake_BODY_${snake_body_new.length}`
 snake_body.className = "snake_b"
 snake_body.style.top = `${snake_body_old.at(-1).y}px`
@@ -83,7 +87,7 @@ function checkAppple(){ //if apple was eaten by head of snake we use changeApple
 }
 
 function checkEndOfGame(){
-    if (snake_body_new[0].x < 0 || snake_body_new[0].x > 5*m || snake_body_new[0].y < 0 || snake_body_new[0].y > 5*m){
+    if (snake_body_new[0].x < 0 || snake_body_new[0].x > (map.x - 1)*m || snake_body_new[0].y < 0 || snake_body_new[0].y >  (map.y - 1)*m){
         endOfGame()
         return true
     }
@@ -144,25 +148,25 @@ function changeApple(){ //change apple position on random
     let localFlag = true
     while(localFlag){
         apple_position = {
-            x: Math.floor(Math.random() * 6)*m,
-            y: Math.floor(Math.random() * 6)*m
+            x: Math.floor(Math.random() * map.x)*m,
+            y: Math.floor(Math.random() * map.y)*m
         }
-        for (let k in snake_body_new){
-            if (snake_body_new[k].x != apple_position.x || snake_body_new[k].y != apple_position.y){
-                localFlag = false
-                console.log('%capp.js line:161 apple_position.x', 'color: #a52a2a;', apple_position.x);
-                console.log('%capp.js line:161 apple_position.y', 'color: #a52a2a;', apple_position.y);
-                console.log("----------");
-                console.log('%capp.js line:161 apple_position.x', 'color: #a52a2a;', snake_body_new[k].x);
-                console.log('%capp.js line:161 apple_position.y', 'color: #a52a2a;', snake_body_new[k].y);
-                console.log("");
-                
-            }
-            else{
-                localFlag = false
-            }
-
-        } 
+        if (snake_body_new.length != map.x * map.y){
+            for (let k in snake_body_new){
+                if (snake_body_new[k].x != apple_position.x || snake_body_new[k].y != apple_position.y){
+                    localFlag = false
+                }
+                else{
+                    console.log(snake_body_new.length -2, map.x * map.y);
+                    localFlag = true
+                    break
+                }
+    
+            } 
+        }
+        else{
+            localFlag = false
+        }
     }
     apple.style.top = `${apple_position.y}px`
     apple.style.left = `${apple_position.x}px `
@@ -207,15 +211,20 @@ function sleep(ms) {
   }
 
 function endOfGame(){
-    document.getElementsByTagName("h1")[0].style.visibility = "visible"
+    if (snake_body_new.length - 1 == map.x * map.y){
+        document.getElementsByTagName("h1")[0].style.visibility = "visible"
+        document.getElementsByTagName("h1")[0].innerHTML = "YOU WIN"
+    }
+    else{
+        document.getElementsByTagName("h1")[0].style.visibility = "visible"
+    }
     endFlag = true
 }
 
 async function start(){
     while(!endFlag){
-        await sleep(500)
+        await sleep(400)
         for (let o in snake_body_old){
-            
             snake_body_old[o].x = snake_body_new[o].x
             snake_body_old[o].y = snake_body_new[o].y
         }
