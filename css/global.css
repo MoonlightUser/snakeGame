@@ -33,7 +33,7 @@
 
 .apple {
     position: absolute;
-    background-color: rgb(255, 60, 0);
+    background-image: url("https://github.com/MoonlightUser/snakeGame/blob/main/img/apple.png");
     border-style: solid;
     width: 30px;
     height: 30px;
