@@ -8,14 +8,15 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    background-color: azure;
+    background-color: rgb(255, 255, 255);
     border-style: solid;
     z-index: 1;
 }
 
 .snake {
     position: absolute;
-    background-color: chartreuse;
+    content: url(https://github.com/MoonlightUser/snakeGame/blob/55d50c20e86a3baccc9dad7503d7d8020cc2d0b2/img/head.png?raw=true);
+    transform: rotate(-90deg);
     border-style: solid;
     width: 30px;
     height: 30px;
@@ -28,12 +29,12 @@
     border-style: solid;
     width: 30px;
     height: 30px;
-    z-index: 80;
+    z-index: 79;
 }
 
 .apple {
     position: absolute;
-    background-image: url("https://github.com/MoonlightUser/snakeGame/blob/main/img/apple.png");
+    content: url("https://github.com/MoonlightUser/snakeGame/blob/main/img/apple.png?raw=true");
     border-style: solid;
     width: 30px;
     height: 30px;

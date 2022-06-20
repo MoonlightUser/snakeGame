@@ -104,6 +104,7 @@ function changeHeadPosition(){
             }
         }
         snake_body_new[0].y -= m
+        document.getElementById("snake_HEAD").style.transform = "rotate(-90deg)"
     }
     else if (keyNow == "a"){
         for (let k in snake_body_new){
@@ -112,6 +113,7 @@ function changeHeadPosition(){
             }
         }
         snake_body_new[0].x -= m
+        document.getElementById("snake_HEAD").style.transform = "rotate(-180deg)"
     }
     else if (keyNow == "d"){
         for (let k in snake_body_new){
@@ -120,6 +122,8 @@ function changeHeadPosition(){
             }
         }
         snake_body_new[0].x += m
+        document.getElementById("snake_HEAD").style.transform = "rotate(0deg)"
+
     }
     else if (keyNow == "s"){
         for (let k in snake_body_new){
@@ -128,6 +132,7 @@ function changeHeadPosition(){
             }
         }
         snake_body_new[0].y += m
+        document.getElementById("snake_HEAD").style.transform = "rotate(90deg)"
     }
     checkAppple()
 }
@@ -138,7 +143,6 @@ function changeBodyPosiion(){
 
 function renderSnake(){//render the snake
     let snake_head = document.getElementById("snake_HEAD")
-    snake_head.className = "snake"
     snake_head.style.top = `${snake_body_new[0].y}px`
     snake_head.style.left = `${snake_body_new[0].x}px`
     document.body.appendChild(snake_head)
@@ -231,8 +235,8 @@ async function start(){
         changeHeadPosition()
         if (checkEndOfGame()){}
         else{
-            renderBody()
             renderSnake()                
+            renderBody()
         }
     }    
 }
